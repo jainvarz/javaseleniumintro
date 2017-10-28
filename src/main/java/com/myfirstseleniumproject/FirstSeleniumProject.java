@@ -1,5 +1,11 @@
 package com.myfirstseleniumproject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +16,25 @@ public class FirstSeleniumProject {
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 		
-		System.setProperty("webdriver.chrome.driver", "/Users/varjain/dev/seleniumdrivers/chromedriver");
+		File configFile = new File("config.properties");
+		String chromeDriverPath = "";
+		
+		try {
+			FileReader reader = new FileReader(configFile);
+			Properties props = new Properties();
+			props.load(reader);
+			
+			chromeDriverPath = props.getProperty("seleniumChromeDriver");
+		
+			System.out.print("ChromeDriver path is: " + chromeDriverPath);
+			reader.close();
+		} catch (FileNotFoundException ex) {
+			// file does not exist
+		} catch (IOException ex) {
+			// I/O error
+		}
+		
+		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
 		// Create a new instance of the FireFox driver
 		WebDriver driver = new ChromeDriver();
@@ -40,7 +64,6 @@ public class FirstSeleniumProject {
  
 		//Closing browser
 		driver.close();
-
 	}
 
 }
